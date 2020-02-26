@@ -150,5 +150,5 @@ function cross(a, b) {
 
 const data = d3.csvParse("data.csv", d3.autoType)
 // how to read in data here?? not sure what the other code is expecting
-//console.log(data)
+console.log(data)
 scatterplotMatrix(data)
