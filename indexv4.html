@@ -62,30 +62,37 @@ var y = d3.scaleLinear()
 
 var xAxis = d3.axisBottom()
     .scale(x)
-    .ticks(6)
-    .tickFormat(d3.format(".0s"));;
+    .ticks(6, "s");
+    //.tickFormat(d3.format(".0s"));
 
 var yAxis = d3.axisLeft()
     .scale(y)
-    .ticks(6)
-    .tickFormat(d3.format(".0s"));
+    .ticks(6, "s");
+    //.tickFormat(d3.format(".0s"));
+
+    console.log("values for range:");
+    console.log(padding / 2);
+    console.log(size - padding / 2);
 
 var color = d3.scaleOrdinal(d3.schemeTableau10);
 
-d3.csv("flowers.csv").then(function(data) {
+d3.csv("la-4col-unsort.csv").then(function(data) {
 
   var domainByTrait = {},
       traits = d3.keys(data[0]).filter(function(d) { return d !== "type"; }),
       n = traits.length;
 
   traits.forEach(function(trait) {
+    console.log(trait);
     domainByTrait[trait] = d3.extent(data, function(d) { return d[trait]; });
+    // TODO for some reason this is reversed for some.
+    console.log(domainByTrait[trait]);
   });
 
   xAxis.tickSize(size * n);
   yAxis.tickSize(-size * n);
 
-  console.log(size * n);
+//  console.log(size * n);
 
   var svg = d3.select("body").append("svg")
       .attr("width", size * n + padding)
@@ -97,7 +104,6 @@ d3.csv("flowers.csv").then(function(data) {
       .data(traits)
     .enter().append("g")
       .attr("class", "x axis")
-      //.attr("transform", function(d, i) { return "translate(" + (n - i - 1) * size + ",0)"; })
       .attr("transform", function(d, i) { return "translate(" + (n - i - 1) * size + ",0)"; })
       .each(function(d) { x.domain(domainByTrait[d]); d3.select(this).call(xAxis); });
 
@@ -112,7 +118,8 @@ d3.csv("flowers.csv").then(function(data) {
       .data(cross(traits, traits))
     .enter().append("g")
       .attr("class", "cell")
-      .attr("transform", function(d) { return "translate(" + (n - d.i - 1) * size + "," + d.j * size + ")"; })
+      .attr("transform", function(d) {
+        return "translate(" + (n - d.i - 1) * size + "," + d.j * size + ")"; })
       .each(plot);
 
   // Titles for the diagonal.
