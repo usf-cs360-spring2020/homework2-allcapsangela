@@ -40,7 +40,6 @@ function scatterplotMatrix(data) {
   const traits = d3.keys(data[0]).filter(d => d !== 'species')
   const n = traits.length
   console.log(data[0])
-  console.log(data[1])
 
   traits.forEach(trait => {
     domainByTrait[trait] = extent(data, d => d[trait]);
@@ -149,15 +148,7 @@ function cross(a, b) {
   return c;
 }
 
-const data = d3.csv("data.csv")//.then(function(data) {
-console.log(data)
-  //  return {
-  //   species : data.species,
-  //   pwidth : +data.pwidth
-  // //   state : d.state,
-  // //   population : +d.population,
-  // //   land_area : +d["land area"]
-  //  };
-  //console.log(data[0]);
-//});
+const data = d3.csvParse("data.csv", d3.autoType)
+// how to read in data here?? not sure what the other code is expecting
+//console.log(data)
 scatterplotMatrix(data)
