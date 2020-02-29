@@ -9,11 +9,11 @@
 
     <!-- Load Bulma from CDN (consider saving it to repository instead) -->
     <!-- https://bulma.io/ -->
-
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
     <style>
     svg {
       font: 12px sans-serif;
-      padding: 10px;
+
     }
 
     .axis,
@@ -54,7 +54,7 @@
       stroke: #fff;
     }
 </style>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
+
     <!-- Load Font Awesome 5 (free) icons -->
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
   </head>
@@ -142,35 +142,36 @@
       <!-- Begin page content -->
       <div class="content">
         <h1 class="title">
-          Homework 2: Educational Attainment ETC ETC TO ADD
+          Homework 2: Income Outcomes of Los Angeles Colleges
         </h1>
         <p class="subtitle">
           Scatterplot Matrix in Tableau & D3
         </p>
-
-        <p>For Homework 2, I created a scatterplot matrix showing SOMETHING about California colleges.</p>
+        <p>For Homework 2, I created a scatterplot matrix showing income outcomes for Los Angeles-area colleges (1980-1982 birth cohorts). I compared mean student income, mean parental income, mobility rate, and color-coded by college type. Since this is a scatterplot matrix, we can see the relationship of all four data columns with each other. To read this, we use the row and column of a particular cell to see what two values are getting plotted against each other, and then use the shape of the plot in that cell to see the relationship. </p>
 
         <h2 id="data">Data</h2>
 
-        <p>Description of dataset blah blah</p>
+        <p>This is a dataset from <a href="https://opportunityinsights.org/">Opportunity Insights' </a> <a href="https://opportunityinsights.org/paper/mobilityreportcards/">Mobility Report Colleges</a> project, which reports on intergenerational income mobility at colleges across the United States; specifically, I used the dataset "Baseline Cross-Sectional Estimates of Child and Parent Income Distributions by College".</p>
 
         <blockquote>
           <p>
-            License from <a href="https://opportunityinsights.org/data/">here</a>, TBA
+            This is a "publicly available dataset that can be used by other researchers and practitioners to support their own work."
           </p>
-          <cite>Put the link down here I guess.</cite>
+          <cite>License found <a href="https://opportunityinsights.org/data/">here</a>.</cite>
         </blockquote>
 
-        <p>The original dataset has columns for XYZABCDEFG</p>
+        <p>The original dataset has 59 columns for 2200 colleges in the US. Columns include information about the college (its type, tier of competitiveness, geographic information) and about the students (proportion of female students, proportion of married students [in 2014]) and their incomes (mean, median, rank, etc), as well as similar information about their parents. Much of the income information is separated by quintile. For my visualization, I focused on the following categories:</p>
 
         <ol>
-          <li><strong>Category:</strong> "Description, example value"</li>
-
+          <li><strong>Type:</strong> Public (1), Private non-profit (2), For-profit (3)</li>
+          <li><strong>k_mean:</strong> "Mean kid earnings", in dollars</li>
+          <li><strong>par_mean:</strong> "Mean parental income", in dollars</li>
+          <li><strong>mr_kq5_pq1:</strong> "Mobility rate (joint probability of parents in bottom quintile and child in top quintile of the income distribution)", expressed as a decimal</li>
         </ol>
 
         <h4 id="wrangling">Wrangling</h4>
 
-        <p>I took the full dataset CSV and used Excel to get only those schools in the Los Angeles commuting zone (column czname). This relies on the dataset's own encoding of commuting zones, which may not match with actual reality (for example, I live in what this dataset would consider the San Jose commuting zone, yet I attend school in San Francisco). I then manually created a new CSV file with only the relevant columns (type, k_mean, par_mean, mr_kq5_pq1) for those schools in Los Angeles. Again using Excel, I multiplied all the values in mr_kw5_pq1 by 100 to create percentages instead of decimals with many leading 0s, and sorted the type column so the legend appears in correct order. The reduced dataset used for my visualization is visible as la-4col-sort.csv.</p>
+        <p>I took the full dataset CSV and used Excel to get only those schools in the Los Angeles commuting zone (column czname). This relies on the dataset's own encoding of commuting zones, which may not match with actual reality (for example, I live in what this dataset would consider the San Jose commuting zone, yet I attend school in San Francisco). I then manually created a new CSV file with only the relevant columns (type, k_mean, par_mean, mr_kq5_pq1) for those schools in Los Angeles. Again using Excel, I multiplied all the values in mr_kw5_pq1 by 100 to create percentages instead of decimals with many leading 0s, and sorted the type column so the legend appears in correct order. The reduced dataset used for my visualization is visible as <a href="https://github.com/usf-cs360-spring2020/homework2-allcapsangela/blob/gh-pages/la-4col-sort.csv">la-4col-sort.csv</a>.</p>
 
         <h2 id="visualizations">Visualizations</h2>
 
@@ -184,9 +185,9 @@
         <div id="d3"></div>
         <script src="scatterplotmatrix.js">    </script>
         <h4>Conclusions</h4>
-        <p>For-profit colleges are generally associated with lower mobility rates and incomes (both parental and student). Private colleges are associated generally with higher incomes, but lower mobility rates, sugesting that wealthier families tend to attend private colleges and maintain that wealth. Public schools seem to have the highest mobility rates, suggesting that lower-income students who go can then improve their income category.</p>
+        <p>Parental income and student income are generally positively correlated, but there are some exceptions (where a higher mobility rate steps in). For-profit colleges are generally associated with lower mobility rates and incomes (both parental and student). Private colleges are associated generally with higher incomes, but lower mobility rates, sugesting that wealthier families tend to attend private colleges and maintain that wealth. Public schools seem to have the highest mobility rates, suggesting that lower-income students who go can then improve their income category.</p>
         <span class="heading">Acknowledgements</span>
-
+        <p><a href="https://github.com/usf-cs360-spring2020/template-bulma">Original theme template</a></p>
         <p>
           <a href="https://www.edupristine.com/blog/scatter-plot-matrix-in-tableau">Tableau Scatterplot Matrix Reference</a>
         </p>
@@ -196,7 +197,7 @@
         <p>
           <a href="https://bl.ocks.org/mbostock/9764126">Tick formatting</a>
         </p>
-
+        <p><a href="https://d3-legend.susielu.com">d3 Legends</a> and <a href="https://vizhub.com/allcapsangela/026bad465022471dabb6a243cb646db7">the d3 Practice Lab</a> for placement</p>
         <p class="is-6">
           <em>Thanks to Prof. Sophie Engle for her assignment to do something with this dataset.</em>
         </p>
@@ -262,7 +263,7 @@
 
       <p>
         <!-- TODO: Change to link to your Github repository -->
-        <a href="https://github.com/usf-cs360-spring2020/template-bulma" class="button is-small" style="padding-left: 1em; padding-right: 1em;">
+        <a href="https://github.com/usf-cs360-spring2020/homework2-allcapsangela" class="button is-small" style="padding-left: 1em; padding-right: 1em;">
           <i class="fab fa-github-alt"></i>&nbsp;<strong>Github</strong>
         </a>
 

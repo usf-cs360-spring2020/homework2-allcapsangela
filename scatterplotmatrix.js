@@ -121,7 +121,7 @@ d3.csv("la-4col-sort.csv").then(function(data) {
     .shapePadding(4)
     .labelOffset(10)
     .labelFormat("d")
-    .title('School Type')
+    .title('Type')
     .orient('vertical')
     .labels(["public", "private non-profit", "for-profit"]);
 
