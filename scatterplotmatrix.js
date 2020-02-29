@@ -1,58 +1,6 @@
-<!DOCTYPE html>
-<meta charset="utf-8">
-<style>
-
-svg {
-  font: 10px sans-serif;
-  padding: 13px;
-}
-
-.axis,
-.frame {
-  shape-rendering: crispEdges;
-}
-
-.axis line {
-  stroke: #ddd;
-}
-
-.axis path {
-  display: none;
-}
-
-.cell text {
-  font-weight: bold;
-  text-transform: capitalize;
-  fill: black;
-}
-
-.frame {
-  fill: none;
-  stroke: #aaa;
-}
-
-circle {
-  fill-opacity: .7;
-}
-
-circle.hidden {
-  fill: #ccc !important;
-}
-
-.extent {
-  fill: #000;
-  fill-opacity: .125;
-  stroke: #fff;
-}
-
-</style>
-<body>
-<script src="//d3js.org/d3.v5.min.js"></script>
-<script>
-
 var width = 960,
-    size = 280,
-    padding = 20;
+    size = 200,
+    padding = 30;
 
 var x = d3.scaleLinear()
     .range([padding / 2, size - padding / 2]);
@@ -62,48 +10,39 @@ var y = d3.scaleLinear()
 
 var xAxis = d3.axisBottom()
     .scale(x)
-    .ticks(6, "s");
+    .ticks(4, "s")    ;
     //.tickFormat(d3.format(".0s"));
 
 var yAxis = d3.axisLeft()
     .scale(y)
-    .ticks(6, "s");
+    .ticks(4, "s")    ;
     //.tickFormat(d3.format(".0s"));
-
-    console.log("values for range:");
-    console.log(padding / 2);
-    console.log(size - padding / 2);
 
 var color = d3.scaleOrdinal(d3.schemeTableau10);
 
-d3.csv("la-4col-unsort.csv").then(function(data) {
+d3.csv("la-4col-sort.csv").then(function(data) {
 
   var domainByTrait = {},
       traits = d3.keys(data[0]).filter(function(d) { return d !== "type"; }),
       n = traits.length;
 
   traits.forEach(function(trait) {
-    console.log(trait);
     domainByTrait[trait] = d3.extent(data, function(d) { return Number(d[trait]); });
-    //var vMax = d3.max(data, function (d) { return Number(d[trait]) });
-    //var vMin = d3.min(data, function (d) { return Number(d[trait]) });
-
-    //domainByTrait[trait] = [vMin, vMax];
-
-    // TODO for some reason this is reversed for some.
-    console.log(domainByTrait[trait]);
   });
+
+  console.log(domainByTrait);
 
   xAxis.tickSize(size * n);
   yAxis.tickSize(-size * n);
 
-//  console.log(size * n);
 
-  var svg = d3.select("body").append("svg")
-      .attr("width", size * n + padding)
-      .attr("height", size * n + padding)
+  var svg = d3.select("#d3").append("svg")
+      //.attr("width", size * n + padding * 2 + 40)
+      //.attr("height", size * n + padding * 2 + 40)
+      .attr("width", 960)
+      .attr("height", 740)
     .append("g")
-      .attr("transform", "translate(" + padding + "," + padding / 2 + ")");
+      .attr("transform", "translate(" + padding + "," + 25 + ")");
 
   svg.selectAll(".x.axis")
       .data(traits)
@@ -134,8 +73,6 @@ d3.csv("la-4col-unsort.csv").then(function(data) {
       .attr("dy", ".71em")
       .text(function(d) { return d.x; });
 
-  //cell.call(brush);
-
   function plot(p) {
     var cell = d3.select(this);
 
@@ -144,8 +81,8 @@ d3.csv("la-4col-unsort.csv").then(function(data) {
 
     cell.append("rect")
         .attr("class", "frame")
-        .attr("x", padding / 2)
-        .attr("y", padding / 2)
+        .attr("x", padding / 3)
+        .attr("y", padding / 3)
         .attr("width", size - padding)
         .attr("height", size - padding);
 
@@ -158,6 +95,39 @@ d3.csv("la-4col-unsort.csv").then(function(data) {
         .style("fill", function(d) { return color(d.type); });
   }
 
+  // title & citation
+  svg.append("text")
+      .attr("text-anchor", "middle")
+      .attr("x", 275)
+      .attr("font-size", 22)
+      //.attr("y", height + margin.top + 10)
+      .text("Los Angeles Area College Outcomes");
+
+      svg.append("text")
+          .attr("text-anchor", "start")
+          .attr("x", 10)
+          .attr("y", 650)
+          .text("Source: Baseline Cross-Sectional Estimates of Child and Parent Income Distributions by College from Opportunity Insights https://opportunityinsights.org/paper/mobilityreportcards/");
+
+  // place legend into its own group
+  const group = svg.append('g').attr('id', 'circle-legend')
+  .attr("transform", "translate(" + 600 + "," + 100 + ")");
+
+  // https://d3-legend.susielu.com/#size-linear
+  const legendColor = d3.legendColor()
+    .scale(color)
+    .shape('circle')
+    .ascending(false)
+    .shapePadding(4)
+    .labelOffset(10)
+    .labelFormat("d")
+    .title('School Type')
+    .orient('vertical')
+    .labels(["public", "private non-profit", "for-profit"]);
+
+  group.call(legendColor);
+
+
 });
 
 function cross(a, b) {
@@ -165,5 +135,3 @@ function cross(a, b) {
   for (i = -1; ++i < n;) for (j = -1; ++j < m;) c.push({x: a[i], i: i, y: b[j], j: j});
   return c;
 }
-
-</script>

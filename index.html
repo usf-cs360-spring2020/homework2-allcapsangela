@@ -10,6 +10,50 @@
     <!-- Load Bulma from CDN (consider saving it to repository instead) -->
     <!-- https://bulma.io/ -->
     <link rel="stylesheet" href="stylesheet.css">
+    <style>
+    svg {
+      font: 12px sans-serif;
+      padding: 10px;
+    }
+
+    .axis,
+    .frame {
+      shape-rendering: crispEdges;
+    }
+
+    .axis line {
+      stroke: #ddd;
+    }
+
+    .axis path {
+      display: none;
+    }
+
+    .cell text {
+      font-weight: bold;
+      text-transform: capitalize;
+      fill: black;
+    }
+
+    .frame {
+      fill: none;
+      stroke: #aaa;
+    }
+
+    circle {
+      fill-opacity: .7;
+    }
+
+    circle.hidden {
+      fill: #ccc !important;
+    }
+
+    .extent {
+      fill: #000;
+      fill-opacity: .125;
+      stroke: #fff;
+    }
+</style>
 
     <!-- Load Font Awesome 5 (free) icons -->
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
@@ -126,20 +170,21 @@
 
         <h4 id="wrangling">Wrangling</h4>
 
-        <p>Roll up??? Filter???? Separate????</p>
+        <p>I took the full dataset CSV and used Excel to get only those schools in the Los Angeles commuting zone (column czname). This relies on the dataset's own encoding of commuting zones, which may not match with actual reality (for example, I live in what this dataset would consider the San Jose commuting zone, yet I attend school in San Francisco). I then manually created a new CSV file with only the relevant columns (type, k_mean, par_mean, mr_kq5_pq1) for those schools in Los Angeles. Again using Excel, I multiplied all the values in mr_kw5_pq1 by 100 to create percentages instead of decimals with many leading 0s, and sorted the type column so the legend appears in correct order. The reduced dataset used for my visualization is visible as la-4col-sort.csv.</p>
 
         <h2 id="visualizations">Visualizations</h2>
 
         <p>How encoded data?? Scatterplot matrix blah blah</p>
 
         <h4>Tableau Prototype</h4>
-        <img src="tableau-piechart.png" height="500" width="960" id="tableau">
+        <img src="scatterplotprototype.png" height="500" width="960" id="tableau">
         <h4>D3 Chart</h4>
-        <div id="d3" style="height:500px; width:960px;"></div>
         <script src="https://d3js.org/d3.v5.min.js"></script>
-        <script src="piechart.js">    </script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.25.6/d3-legend.min.js" integrity="sha256-qo76Vs9B6JAALbrTn+PcN1r09hbNLd2M78V19glOMeU=" crossorigin="anonymous"></script>
+        <div id="d3"></div>
+        <script src="scatterplotmatrix.js">    </script>
         <h4>Conclusions</h4>
-        <p>It's all capitalism's fault.</p>
+        <p>For-profit colleges are generally associated with lower mobility rates and incomes (both parental and student). Private colleges are associated generally with higher incomes, but lower mobility rates, sugesting that wealthier families tend to attend private colleges and maintain that wealth. Public schools seem to have the highest mobility rates, suggesting that lower-income students who go can then improve their income category.</p>
         <span class="heading">Acknowledgements</span>
 
         <p>
